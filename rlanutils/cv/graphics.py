@@ -65,4 +65,26 @@ def calc_polyline_length(points: np.ndarray):
     return total_distance
 
 
+def are_points_within_boundary(points_to_check: np.ndarray, boundary_points: np.ndarray) -> bool:
+    """Function to check if points are within boundary (only works for 2D points).
+
+    Parameters
+    ----------
+    points_to_check : np.ndarray
+        the points to check, of shape (N, 2)
+    boundary_points : np.ndarray
+        a series of points that define the boundary, of shape (M, 2)
+    Returns
+    -------
+    bool
+        the result
+    """
+    return bool(np.all(
+        (np.all(points_to_check[:, 0] >= boundary_points[:, 0].min(axis=0))) & \
+        (np.all(points_to_check[:, 0] <= boundary_points[:, 0].max(axis=0))) & \
+        (np.all(points_to_check[:, 1] >= boundary_points[:, 1].min(axis=0))) & \
+        (np.all(points_to_check[:, 1] <= boundary_points[:, 1].max(axis=0)))
+    ))
+
+
 __all__ = ["lerp", "SplineInterpolator", "calc_polyline_length"]

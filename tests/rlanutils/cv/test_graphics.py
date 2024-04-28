@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from rlanutils.cv.graphics import SplineInterpolator, calc_polyline_length, lerp
+from rlanutils.cv.graphics import SplineInterpolator, calc_polyline_length, lerp, are_points_within_boundary
 
 
 def test_lerp():
@@ -85,3 +85,21 @@ def test_spline_interpolator():
        -2.93912021e-01, -4.59361215e-01, -6.16012269e-01, -7.47491969e-01,
        -8.39027698e-01, -8.79000054e-01, -8.60195723e-01, -7.80630188e-01,
        -6.43853519e-01, -4.58705129e-01, -2.38539637e-01, -3.67394040e-16]))
+
+
+def test_points_within_boundary():
+    boundary_points = np.array([[0, 0], [0, 5], [5, 0], [5, 5]])
+    points_to_check = np.array([[1, 1], [2, 2], [3, 3], [4, 4]])
+    assert are_points_within_boundary(points_to_check, boundary_points)
+
+
+def test_points_outside_boundary():
+    boundary_points = np.array([[0, 0], [0, 5], [5, 0], [5, 5]])
+    points_to_check = np.array([[6, 6], [7, 7], [-1, -1], [-2, -2]])
+    assert not are_points_within_boundary(points_to_check, boundary_points)
+
+
+def test_boundary_as_single_point():
+    boundary_points = np.array([[2, 2]])
+    points_to_check = np.array([[2, 2], [2, 2], [2, 2]])
+    assert are_points_within_boundary(points_to_check, boundary_points)
