@@ -87,4 +87,4 @@ def are_points_within_boundary(points_to_check: np.ndarray, boundary_points: np.
     ))
 
 
-__all__ = ["lerp", "SplineInterpolator", "calc_polyline_length"]
+__all__ = ["lerp", "SplineInterpolator", "calc_polyline_length", "are_points_within_boundary"]
