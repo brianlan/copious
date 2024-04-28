@@ -1,6 +1,6 @@
 import pytest
 
-from lanutils.data_structure.set import find_consecutive_subsets
+from rlanutils.data_structure.set import find_consecutive_subsets
 
 
 @pytest.mark.parametrize("numbers, expected_output", [

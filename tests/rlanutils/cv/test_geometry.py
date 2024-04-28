@@ -1,6 +1,6 @@
 import numpy as np
 
-from lanutils.cv.geometry import points3d_to_homo
+from rlanutils.cv.geometry import points3d_to_homo
 
 
 def test_to_homo():

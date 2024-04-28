@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from lanutils.cv.graphics import SplineInterpolator, calc_polyline_length, lerp
+from rlanutils.cv.graphics import SplineInterpolator, calc_polyline_length, lerp
 
 
 def test_lerp():
