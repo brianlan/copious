@@ -82,7 +82,7 @@ class Box3d:
             of shape (8, 3)
         """
         if self._corners is None:
-            self._corners = self.calc_box_corners(self.position, self.scale, self.quat)
+            self._corners = self.calc_box_corners()
         return self._corners
     
     def calc_box_corners(self) -> np.ndarray:
@@ -108,10 +108,10 @@ class Box3d:
         return corners
 
     @classmethod
-    def from_pos_scale_euler(cls, pos_x: float, pos_y: float, pos_z: float, scale_x: float, scale_y: float, scale_z: float, rot_euler_x: float, rot_euler_y: float, rot_euler_z: float, degree: bool = False):
+    def from_pos_scale_euler(cls, pos_x: float, pos_y: float, pos_z: float, scale_x: float, scale_y: float, scale_z: float, rot_euler_x: float, rot_euler_y: float, rot_euler_z: float, degrees: bool = False):
         pos = np.array([pos_x, pos_y, pos_z], dtype=np.float32)
         scale = np.array([scale_x, scale_y, scale_z], dtype=np.float32)
-        quat = R.from_euler("XYZ", [[rot_euler_x, rot_euler_y, rot_euler_z]], degree=degree)
+        quat = R.from_euler("XYZ", [rot_euler_x, rot_euler_y, rot_euler_z], degrees=degrees)
         return cls(pos, scale, quat)
 
 
