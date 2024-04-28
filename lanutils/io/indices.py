@@ -68,3 +68,5 @@ def get_indices(ind_path, root_dir: pathlib.Path, suffix, random_sample=None, se
         np.random.seed(seed)
 
     return np.random.choice(indices, size=n_samples_to_draw, replace=False).tolist()
+
+__all__ = ["Indices", "get_indices"]

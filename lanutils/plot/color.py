@@ -29,3 +29,6 @@ def color_generator(cmap_name: str = "rainbow", n_desired_colors: int = 5, cycli
         colors = itertools.cycle(colors)
     for color in colors:
         yield color
+
+
+__all__ = ["rgb_to_hex", "get_colors", "color_generator"]
