@@ -1,4 +1,7 @@
-def find_consecutive_subsets(numbers):
+from typing import List, Union, Set
+
+
+def find_consecutive_subsets(numbers: Union[List, Set]) -> List[List]:
     # Convert the set to a sorted list
     sorted_numbers = sorted(numbers)
     
