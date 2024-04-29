@@ -1,5 +1,5 @@
 import argparse
-
+import sys
 import pytest
 
 from rlanutils.io.args import KeyValueAction
@@ -14,8 +14,9 @@ def test_key_value_action():
 
 
 def test_key_value_action_with_invalid_input():
-    parser = argparse.ArgumentParser(exit_on_error=False)
-    parser.add_argument("--keyvalue", nargs="+", action=KeyValueAction)
+    if sys.version_info.major == 3 and sys.version_info.minor > 8:
+        parser = argparse.ArgumentParser(exit_on_error=False)
+        parser.add_argument("--keyvalue", nargs="+", action=KeyValueAction)
 
-    with pytest.raises(argparse.ArgumentError):
-        args = parser.parse_args(["--keyvalue", "key1val1"])
+        with pytest.raises(argparse.ArgumentError):
+            args = parser.parse_args(["--keyvalue", "key1val1"])
