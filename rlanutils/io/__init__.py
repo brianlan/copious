@@ -7,6 +7,7 @@ from .fs import (
     ensured_path,
     parent_ensured_path,
 )
+from .args import KeyValueAction
 from .indices import Indices, get_indices
 from .network import retry
 from .parallelism import maybe_multiprocessing, maybe_multithreading
@@ -24,4 +25,5 @@ __all__ = [
     "retry",
     "Indices",
     "get_indices",
+    "KeyValueAction",
 ]
