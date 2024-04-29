@@ -38,8 +38,8 @@ def xyzq2mat(
     T[:3, 3] = [x, y, z]
     T[:3, :3] = rot
     if as_homo:
-        T = T[:3, :]
-    return T
+        return T
+    return T[:3, :]
 
 
 def points3d_to_homo(points3d: np.ndarray) -> np.ndarray:
