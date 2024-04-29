@@ -1,7 +1,7 @@
 from typing import List, Union, Tuple
 
 import numpy as np
-from scipy.spatial.transform import Rotation as R
+from scipy.spatial.transform import Rotation
 
 
 def xyzq2mat(
@@ -33,7 +33,7 @@ def xyzq2mat(
     np.ndarray
         of shape (3, 4) if as_homo == False, otherwise, (4, 4)
     """
-    rot = R.from_quat([qx, qy, qz, qw]).as_matrix()
+    rot = Rotation.from_quat([qx, qy, qz, qw]).as_matrix()
     T = np.eye(4)
     T[:3, 3] = [x, y, z]
     T[:3, :3] = rot
@@ -51,7 +51,7 @@ def homo_to_points3d(points_homo: np.ndarray) -> np.ndarray:
 
 
 class Box3d:
-    def __init__(self, position: np.ndarray, scale: np.ndarray, quat: np.ndarray) -> None:
+    def __init__(self, position: np.ndarray, scale: np.ndarray, rotation: Rotation) -> None:
         """_summary_
 
         Parameters
@@ -60,9 +60,8 @@ class Box3d:
             of shape (3, )
         scale : np.ndarray
             of shape (3, )
-        quat : np.ndarray
-            of shape (4, ), scalar-last (x, y, z, w) format
-
+        rotation : scipy.spatial.transform.Rotation
+            rotation
         Returns
         -------
         _type_
@@ -70,7 +69,7 @@ class Box3d:
         """
         self.position = position
         self.scale = scale
-        self.quat = quat
+        self.rotation = rotation
         self._corners = None
     
     @property
@@ -103,7 +102,7 @@ class Box3d:
             [-0.5, -0.5, 0.5],
         ])
         corners = corners * self.scale[None]
-        corners = corners @ self.quat.as_matrix().T
+        corners = corners @ self.rotation.as_matrix().T
         corners = corners + self.position
         return corners
 
@@ -111,8 +110,8 @@ class Box3d:
     def from_pos_scale_euler(cls, pos_x: float, pos_y: float, pos_z: float, scale_x: float, scale_y: float, scale_z: float, rot_euler_x: float, rot_euler_y: float, rot_euler_z: float, degrees: bool = False):
         pos = np.array([pos_x, pos_y, pos_z], dtype=np.float32)
         scale = np.array([scale_x, scale_y, scale_z], dtype=np.float32)
-        quat = R.from_euler("XYZ", [rot_euler_x, rot_euler_y, rot_euler_z], degrees=degrees)
-        return cls(pos, scale, quat)
+        rot = Rotation.from_euler("XYZ", [rot_euler_x, rot_euler_y, rot_euler_z], degrees=degrees)
+        return cls(pos, scale, rot)
 
 
 __all__ = ["xyzq2mat", "points3d_to_homo", "homo_to_points3d", "Box3d"]
