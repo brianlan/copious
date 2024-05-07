@@ -2,6 +2,7 @@ from pathlib import Path
 import functools
 import tempfile
 import json
+import yaml
 from typing import List, Dict, Union
 
 
@@ -17,6 +18,12 @@ def write_json(json_data: Union[Dict, List[Dict]], path: Path, prettify: bool = 
             json.dump(json_data, f, indent=4)
         else:
             json.dump(json_data, f)
+
+
+def read_yaml(path: Path) -> Union[Dict, List[Dict]]:
+    with open(path) as f:
+        y = yaml.safe_load(f)
+    return y
 
 
 def create_empty_temp_file(prefix=None, suffix=None) -> Path:
