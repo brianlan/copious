@@ -1,6 +1,4 @@
-from pathlib import Path
-from rlanutils.io.fs import read_yaml
-from rlanutils.io.fs import mktmpdir
+from copious.io.fs import read_yaml, mktmpdir
 
 def test_read_yaml_compatible_with_pathlib_path():
     tmp_dir = mktmpdir()

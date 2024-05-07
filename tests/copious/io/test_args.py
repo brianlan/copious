@@ -2,7 +2,7 @@ import argparse
 import sys
 import pytest
 
-from rlanutils.io.args import KeyValueAction
+from copious.io.args import KeyValueAction
 
 
 def test_key_value_action():

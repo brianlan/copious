@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name='rlanutils',
+    name='copious',
     version='0.1.11',
     packages=find_packages(),
     description='A handy tool that make your day to day programming much easier. ',
@@ -10,7 +10,7 @@ setup(
     long_description_content_type='text/markdown',
     author='brianlan',
     author_email='brianlanbo@gmail.com',
-    url='https://gitlab.com/rlan/rlanutils',
+    url='https://gitlab.com/rlan/copious',
     install_requires=[
         "numpy",
         "scipy",

@@ -3,7 +3,7 @@ import math
 import pytest
 import numpy as np
 
-from rlanutils.cv.geometry import points3d_to_homo, Box3d, xyzq2mat
+from copious.cv.geometry import points3d_to_homo, Box3d, xyzq2mat
 
 
 def test_to_homo():

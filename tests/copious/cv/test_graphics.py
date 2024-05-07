@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from rlanutils.cv.graphics import SplineInterpolator, calc_polyline_length, lerp, are_points_within_boundary
+from copious.cv.graphics import SplineInterpolator, calc_polyline_length, lerp, are_points_within_boundary
 
 
 def test_lerp():
