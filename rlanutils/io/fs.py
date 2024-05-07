@@ -20,10 +20,15 @@ def write_json(json_data: Union[Dict, List[Dict]], path: Path, prettify: bool = 
             json.dump(json_data, f)
 
 
-def read_yaml(path: Path) -> Union[Dict, List[Dict]]:
+def read_yaml(path: Union[str, Path]) -> Union[Dict, List[Dict]]:
     with open(path) as f:
         y = yaml.safe_load(f)
     return y
+
+
+def write_yaml(data: Union[Dict, List[Dict]], path: Path) -> None:
+    with open(path, "w") as f:
+        yaml.dump(data, f)
 
 
 def create_empty_temp_file(prefix=None, suffix=None) -> Path:
