@@ -42,6 +42,32 @@ def xyzq2mat(
     return T[:3, :]
 
 
+def euler2mat(x: float, y: float, z: float, as_homo: bool = False, axis_order: str = "XYZ", degrees: bool = True) -> np.ndarray:
+    """A helper function that convert euler angles (3 values) representation to transformation matrix representation.
+
+    Parameters
+    ----------
+    x : float
+        x coordinate of the translation
+    y : float
+        y coordinate of the translation
+    z : float
+        z coordinate of the translation
+    as_homo: bool
+        if true, the matrix will be saved as homogeneous (4x4), otherwise, it will be saved as 3x4
+
+    Returns
+    -------
+    np.ndarray
+        of shape (3, 4) if as_homo == False, otherwise, (4, 4)
+    """
+    rot = np.eye(4)
+    rot[:3, :3] = Rotation.from_euler(axis_order, [x, y, z], degrees=degrees).as_matrix()
+    if as_homo:
+        return rot
+    return rot[:3, :3]
+
+
 def points3d_to_homo(points3d: np.ndarray) -> np.ndarray:
     return np.concatenate((points3d, np.ones(len(points3d))[:, None]), axis=1)
 

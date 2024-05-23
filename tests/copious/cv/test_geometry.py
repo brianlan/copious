@@ -2,8 +2,9 @@ import math
 
 import pytest
 import numpy as np
+from scipy.spatial.transform import Rotation
 
-from copious.cv.geometry import points3d_to_homo, Box3d, xyzq2mat
+from copious.cv.geometry import points3d_to_homo, Box3d, xyzq2mat, euler2mat
 
 
 def test_to_homo():
@@ -109,3 +110,55 @@ def test_xyzq2mat_zero_translation():
     matrix = xyzq2mat(0, 0, 0, 0, 0, 0, 1, False)
     expected_matrix = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0]])
     np.testing.assert_array_almost_equal(matrix, expected_matrix)
+
+
+def test_euler2mat_default():
+    x, y, z = 45, 30, 60
+    result = euler2mat(x, y, z)
+    expected_rot = Rotation.from_euler('XYZ', [x, y, z], degrees=True).as_matrix()
+    np.testing.assert_almost_equal(result, expected_rot, decimal=6)
+
+def test_euler2mat_homogeneous():
+    x, y, z = 45, 30, 60
+    result = euler2mat(x, y, z, as_homo=True)
+    expected_rot = np.eye(4)
+    expected_rot[:3, :3] = Rotation.from_euler('XYZ', [x, y, z], degrees=True).as_matrix()
+    np.testing.assert_almost_equal(result, expected_rot, decimal=6)
+
+def test_euler2mat_axis_order():
+    x, y, z = 45, 30, 60
+    result = euler2mat(x, y, z, axis_order='ZYX')
+    expected_rot = Rotation.from_euler('ZYX', [x, y, z], degrees=True).as_matrix()
+    np.testing.assert_almost_equal(result, expected_rot, decimal=6)
+
+def test_euler2mat_radians():
+    x, y, z = np.pi/4, np.pi/6, np.pi/3
+    result = euler2mat(x, y, z, degrees=False)
+    expected_rot = Rotation.from_euler('XYZ', [x, y, z], degrees=False).as_matrix()
+    np.testing.assert_almost_equal(result, expected_rot, decimal=6)
+
+def test_euler2mat_homogeneous_radians():
+    x, y, z = np.pi/4, np.pi/6, np.pi/3
+    result = euler2mat(x, y, z, as_homo=True, degrees=False)
+    expected_rot = np.eye(4)
+    expected_rot[:3, :3] = Rotation.from_euler('XYZ', [x, y, z], degrees=False).as_matrix()
+    np.testing.assert_almost_equal(result, expected_rot, decimal=6)
+
+def test_euler2mat_custom_order_homogeneous():
+    x, y, z = 45, 30, 60
+    result = euler2mat(x, y, z, as_homo=True, axis_order='YXZ')
+    expected_rot = np.eye(4)
+    expected_rot[:3, :3] = Rotation.from_euler('YXZ', [x, y, z], degrees=True).as_matrix()
+    np.testing.assert_almost_equal(result, expected_rot, decimal=6)
+
+def test_euler2mat_zero_angles():
+    x, y, z = 0, 0, 0
+    result = euler2mat(x, y, z)
+    expected_rot = np.eye(3)
+    np.testing.assert_almost_equal(result, expected_rot, decimal=6)
+
+def test_euler2mat_zero_angles_homogeneous():
+    x, y, z = 0, 0, 0
+    result = euler2mat(x, y, z, as_homo=True)
+    expected_rot = np.eye(4)
+    np.testing.assert_almost_equal(result, expected_rot, decimal=6)
