@@ -77,7 +77,7 @@ def homo_to_points3d(points_homo: np.ndarray) -> np.ndarray:
 
 
 class Box3d:
-    def __init__(self, position: np.ndarray, scale: np.ndarray, rotation: Rotation) -> None:
+    def __init__(self, position: np.ndarray, scale: np.ndarray, rotation: Rotation, corners_template: np.ndarray = None) -> None:
         """_summary_
 
         Parameters
@@ -97,6 +97,17 @@ class Box3d:
         self.scale = scale
         self.rotation = rotation
         self._corners = None
+        if self.corners_template is None:
+            self.corners_template = np.array([
+                [0.5, -0.5, -0.5],
+                [0.5, 0.5, -0.5],
+                [0.5, 0.5, 0.5],
+                [0.5, -0.5, 0.5],
+                [-0.5, -0.5, -0.5],
+                [-0.5, 0.5, -0.5],
+                [-0.5, 0.5, 0.5],
+                [-0.5, -0.5, 0.5],
+            ])
     
     @property
     def corners(self) -> np.ndarray:
@@ -117,16 +128,7 @@ class Box3d:
         np.ndarray
             of shape (8, 3)
         """
-        corners = np.array([
-            [0.5, -0.5, -0.5],
-            [0.5, 0.5, -0.5],
-            [0.5, 0.5, 0.5],
-            [0.5, -0.5, 0.5],
-            [-0.5, -0.5, -0.5],
-            [-0.5, 0.5, -0.5],
-            [-0.5, 0.5, 0.5],
-            [-0.5, -0.5, 0.5],
-        ])
+        corners = self.corners_template.copy()
         corners = corners * self.scale[None]
         corners = corners @ self.rotation.as_matrix().T
         corners = corners + self.position
