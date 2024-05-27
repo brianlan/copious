@@ -88,6 +88,17 @@ class Box3d:
             of shape (3, )
         rotation : scipy.spatial.transform.Rotation
             rotation
+        corners_template: 
+            default template looks as follows
+
+                (2) +---------+. (3)
+                    | ` .   fr|  ` .
+                    | (6) +---+-----+ (7)
+                    |     |   |   bk|
+                (1) +-----+---+. (0)|
+                    ` .   |     ` . |
+                    (5) ` +---------+ (4)
+            
         Returns
         -------
         _type_
@@ -97,6 +108,7 @@ class Box3d:
         self.scale = scale
         self.rotation = rotation
         self._corners = None
+        self.corners_template = corners_template
         if self.corners_template is None:
             self.corners_template = np.array([
                 [0.5, -0.5, -0.5],
