@@ -17,4 +17,18 @@ class KeyValueAction(argparse.Action):
             key, value = parts
             getattr(namespace, self.dest)[key] = value
 
-__all__ = ["KeyValueAction"]
+
+class TypeAction(argparse.Action):
+    def __call__(
+        self,
+        parser: argparse.ArgumentParser,
+        namespace: argparse.Namespace,
+        values: Any,
+        option_string: str = None,
+    ) -> None:
+        _type_mapping = {"int": int, "float": float, "str": str}
+        if values not in _type_mapping:
+            parser.error(f"Invalid type: {values}. Choose from 'int', 'float', 'str'.")
+        setattr(namespace, self.dest, _type_mapping[values])
+
+__all__ = ["KeyValueAction", "TypeAction"]

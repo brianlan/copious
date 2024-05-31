@@ -2,7 +2,7 @@ import argparse
 import sys
 import pytest
 
-from copious.io.args import KeyValueAction
+from copious.io.args import KeyValueAction, TypeAction
 
 
 def test_key_value_action():
@@ -20,3 +20,38 @@ def test_key_value_action_with_invalid_input():
 
         with pytest.raises(argparse.ArgumentError):
             args = parser.parse_args(["--keyvalue", "key1val1"])
+
+
+def test_type_action_int():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--type", action=TypeAction)
+    args = parser.parse_args(["--type", "int"])
+    assert args.type == int
+
+
+def test_type_action_float():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--type", action=TypeAction)
+    args = parser.parse_args(["--type", "float"])
+    assert args.type == float
+
+
+def test_type_action_str():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--type", action=TypeAction)
+    args = parser.parse_args(["--type", "str"])
+    assert args.type == str
+
+
+def test_type_action_invalid():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--type", action=TypeAction)
+    with pytest.raises(SystemExit):  # argparse calls sys.exit() on error
+        parser.parse_args(["--type", "invalid"])
+
+
+def test_type_action_no_value():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--type", action=TypeAction)
+    with pytest.raises(SystemExit):  # argparse calls sys.exit() on error
+        parser.parse_args(["--type"])
