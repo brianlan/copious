@@ -5,6 +5,21 @@ import json
 import yaml
 from typing import List, Dict, Union
 
+import numpy as np
+
+
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, (np.int_, np.intc, np.intp, np.int8,
+                            np.int16, np.int32, np.int64, np.uint8,
+                            np.uint16, np.uint32, np.uint64)):
+            return int(obj)
+        elif isinstance(obj, (np.float_, np.float16, np.float32, np.float64)):
+            return float(obj)
+        elif isinstance(obj, (np.ndarray,)):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
+
 
 def read_json(path: Path) -> Union[Dict, List[Dict]]:
     with open(path) as f:
@@ -12,12 +27,14 @@ def read_json(path: Path) -> Union[Dict, List[Dict]]:
     return j
 
 
-def write_json(json_data: Union[Dict, List[Dict]], path: Path, prettify: bool = True) -> None:
+def write_json(json_data: Union[Dict, List[Dict]], path: Path, prettify: bool = True, use_numpy_decoder: bool = False) -> None:
     with open(path, "w") as f:
+        kwargs = {}
         if prettify:
-            json.dump(json_data, f, indent=4)
-        else:
-            json.dump(json_data, f)
+            kwargs.update(indent=4)
+        if use_numpy_decoder:
+            kwargs.update(cls=NumpyEncoder)
+        json.dump(json_data, f, **kwargs)
 
 
 def read_yaml(path: Union[str, Path]) -> Union[Dict, List[Dict]]:

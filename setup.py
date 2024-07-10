@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='copious',
-    version='0.1.15',
+    version='0.1.16',
     packages=find_packages(),
     description='A handy tool that make your day to day programming much easier. ',
     long_description=open('README.md').read(),
