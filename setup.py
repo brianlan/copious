@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='copious',
-    version='0.1.16',
+    version='0.1.18',
     packages=find_packages(),
     description='A handy tool that make your day to day programming much easier. ',
     long_description=open('README.md').read(),
@@ -18,5 +18,6 @@ setup(
         "matplotlib",
         "pytest",
         "pyyaml",
+        "opencv-python",
     ],
 )
