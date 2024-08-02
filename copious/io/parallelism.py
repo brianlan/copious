@@ -35,7 +35,7 @@ def maybe_multithreading(
     else:
         res = [
             func(*args, **kwargs)
-            for args, kwargs in zip_longest(args_list, kwargs_list, fillvalue=d)
+            for args, kwargs in maybe_tqdm(zip_longest(args_list, kwargs_list, fillvalue=d))
         ]
     return res
 
