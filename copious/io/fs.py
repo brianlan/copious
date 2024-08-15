@@ -1,9 +1,10 @@
 from pathlib import Path
+import pickle
 import functools
 import tempfile
 import json
 import yaml
-from typing import List, Dict, Union
+from typing import List, Dict, Union, Any
 
 import numpy as np
 
@@ -46,6 +47,16 @@ def read_yaml(path: Union[str, Path]) -> Union[Dict, List[Dict]]:
 def write_yaml(data: Union[Dict, List[Dict]], path: Path) -> None:
     with open(path, "w") as f:
         yaml.dump(data, f)
+
+
+def read_pickle(path: Path) -> None:
+    with open(path, "rb") as f:
+        return pickle.load(f)
+
+
+def write_pickle(data: Any, path: Path) -> None:
+    with open(path, "wb") as f:
+        pickle.dump(data, f)
 
 
 def create_empty_temp_file(prefix=None, suffix=None) -> Path:
