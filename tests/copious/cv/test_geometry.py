@@ -20,9 +20,30 @@ def test_to_homo():
 def box3d_psr_1():
     return [0, 0, 0, 5, 2, 1.8, 0, 0, math.pi / 2]
 
+
 @pytest.fixture
 def box3d_psr_2():
     return [6, 8, -0.05, 5, 2, 1.8, 0, 0, -math.pi / 2]
+
+
+@pytest.fixture
+def box3d_psr_3a():
+    return [0, 0, 0, 6, 2, 1.6, -0.5236, 0, 0]  # rotate along x-axis by -30 degrees
+
+
+@pytest.fixture
+def box3d_psr_3b():
+    return [0, 0, 0, 2, 6, 1.6, -0.5236, 0, 1.5707963268]  # rotate along x-axis by -30 degrees, then z-axis by 90 degrees (seq: "xyz")
+
+
+@pytest.fixture
+def box3d_psr_4a():
+    return [0.4797, -1.9767,  0.0239, 0.4303, 3.3381, 0.0359, -0.0076, 0.0099, 1.8197]
+
+
+@pytest.fixture
+def box3d_psr_4b():
+    return [0.4797, -1.9767,  0.0239, 3.3381, 0.4303, 0.0359, -0.0076,  0.0099, -2.892689]
 
 
 def test_box3d_get_corners1(box3d_psr_1):
@@ -51,6 +72,32 @@ def test_box3d_get_corners2(box3d_psr_2):
         [7.0, 10.5, 0.85],
         [5.0, 10.5, 0.85],
     ]))
+
+
+def test_box3d_get_corners3(box3d_psr_3a):
+    box = Box3d.from_pos_scale_euler(*box3d_psr_3a, degrees=False)
+    np.testing.assert_almost_equal(box.corners, np.array([
+        [ 3.0, -1.2660254, -0.19282032],
+        [ 3.0,  0.4660254, -1.19282032],
+        [ 3.0,  1.2660254,  0.19282032],
+        [ 3.0, -0.4660254,  1.19282032],
+        [-3.0, -1.2660254, -0.19282032],
+        [-3.0,  0.4660254, -1.19282032],
+        [-3.0,  1.2660254,  0.19282032],
+        [-3.0, -0.4660254,  1.19282032],
+    ]), decimal=4)
+
+
+def test_box3d_get_corners_4(box3d_psr_3a, box3d_psr_3b):
+    box1 = Box3d.from_pos_scale_euler(*box3d_psr_3a, degrees=False)
+    box2 = Box3d.from_pos_scale_euler(*box3d_psr_3b, degrees=False, seq="XYZ")
+    np.testing.assert_almost_equal(box1.corners[[1, 5, 4, 0]], box2.corners[[0, 1, 5, 4]])
+
+
+def test_box3d_get_corners_5(box3d_psr_4a, box3d_psr_4b):
+    box1 = Box3d.from_pos_scale_euler(*box3d_psr_4a, degrees=False)
+    box2 = Box3d.from_pos_scale_euler(*box3d_psr_4b, degrees=False)
+    np.testing.assert_almost_equal(box1.corners[[1, 5, 4, 0]], box2.corners[[0, 1, 5, 4]])
 
 
 def test_xyzq2mat_homogeneous_matrix_shape():

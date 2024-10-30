@@ -147,10 +147,10 @@ class Box3d:
         return corners
 
     @classmethod
-    def from_pos_scale_euler(cls, pos_x: float, pos_y: float, pos_z: float, scale_x: float, scale_y: float, scale_z: float, rot_euler_x: float, rot_euler_y: float, rot_euler_z: float, degrees: bool = False):
+    def from_pos_scale_euler(cls, pos_x: float, pos_y: float, pos_z: float, scale_x: float, scale_y: float, scale_z: float, rot_euler_x: float, rot_euler_y: float, rot_euler_z: float, seq: str = "XYZ", degrees: bool = False,):
         pos = np.array([pos_x, pos_y, pos_z], dtype=np.float32)
         scale = np.array([scale_x, scale_y, scale_z], dtype=np.float32)
-        rot = Rotation.from_euler("XYZ", [rot_euler_x, rot_euler_y, rot_euler_z], degrees=degrees)
+        rot = Rotation.from_euler(seq, [rot_euler_x, rot_euler_y, rot_euler_z], degrees=degrees)
         return cls(pos, scale, rot)
 
 
