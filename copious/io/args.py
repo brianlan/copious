@@ -31,4 +31,14 @@ class TypeAction(argparse.Action):
             parser.error(f"Invalid type: {values}. Choose from 'int', 'float', 'str'.")
         setattr(namespace, self.dest, _type_mapping[values])
 
-__all__ = ["KeyValueAction", "TypeAction"]
+
+def declare_vars_as_global(**kwargs) -> None:
+    for k, v in kwargs.items():
+        globals()[k] = v
+
+
+def g(var_name: str) -> Any:
+    return globals()[var_name]
+
+
+__all__ = ["KeyValueAction", "TypeAction", "declare_vars_as_global", "g"]
