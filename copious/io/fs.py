@@ -11,11 +11,22 @@ import numpy as np
 
 class NumpyEncoder(json.JSONEncoder):
     def default(self, obj):
-        if isinstance(obj, (np.int64, np.intc, np.intp, np.int8,
-                            np.int16, np.int32, np.int64, np.uint8,
-                            np.uint16, np.uint32, np.uint64)):
+        # Handle integer types
+        int_types = [np.intc, np.intp, np.int8, np.int16, np.int32, np.int64, 
+                     np.uint8, np.uint16, np.uint32, np.uint64]
+        # Add np.int_ if it exists (NumPy < 2.0 compatibility)
+        if hasattr(np, 'int_'):
+            int_types.append(np.int_)
+        
+        # Handle float types  
+        float_types = [np.float16, np.float32, np.float64]
+        # Add np.float_ if it exists (NumPy < 2.0 compatibility)
+        if hasattr(np, 'float_'):
+            float_types.append(np.float_)
+            
+        if isinstance(obj, tuple(int_types)):
             return int(obj)
-        elif isinstance(obj, (np.float64, np.float16, np.float32, np.float64)):
+        elif isinstance(obj, tuple(float_types)):
             return float(obj)
         elif isinstance(obj, (np.ndarray,)):
             return obj.tolist()
