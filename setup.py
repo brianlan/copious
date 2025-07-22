@@ -10,7 +10,7 @@ setup(
     long_description_content_type='text/markdown',
     author='brianlan',
     author_email='brianlanbo@gmail.com',
-    url='https://gitlab.com/rlan/copious',
+    url='https://github.com/brianlan/copious',
     install_requires=[
         "numpy",
         "scipy",
