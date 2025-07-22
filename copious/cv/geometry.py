@@ -181,4 +181,4 @@ class Box3d:
         return cls(pos, scale, rot)
 
 
-__all__ = ["xyzq2mat", "points3d_to_homo", "homo_to_points3d", "Box3d"]
+__all__ = ["xyzq2mat", "rt2mat", "euler2mat", "points3d_to_homo", "homo_to_points3d", "Box3d"]
