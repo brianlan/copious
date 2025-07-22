@@ -4,7 +4,7 @@ import pytest
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from copious.cv.geometry import points3d_to_homo, Box3d, xyzq2mat, euler2mat
+from copious.cv.geometry import points3d_to_homo, Box3d, xyzq2mat, euler2mat, rt2mat
 
 
 def test_to_homo():
@@ -209,3 +209,40 @@ def test_euler2mat_zero_angles_homogeneous():
     result = euler2mat(x, y, z, as_homo=True)
     expected_rot = np.eye(4)
     np.testing.assert_almost_equal(result, expected_rot, decimal=6)
+
+
+def test_non_identity_rotation():
+    rotation = np.array([[0, -1, 0],
+                         [1, 0, 0],
+                         [0, 0, 1]])
+    translation = np.array([1, 2, 3])
+    expected = np.hstack([rotation, translation.reshape(-1, 1)])
+    result = rt2mat(rotation, translation, as_homo=False)
+    np.testing.assert_array_equal(result, expected)
+
+
+def test_homogeneous_conversion():
+    rotation = np.array([[0, -1, 0],
+                         [1, 0, 0],
+                         [0, 0, 1]])
+    translation = np.array([1, 2, 3])
+    expected = np.eye(4)
+    expected[:3, :3] = rotation
+    expected[:3, 3] = translation
+    result = rt2mat(rotation, translation, as_homo=True)
+    np.testing.assert_array_equal(result, expected)
+
+
+def test_translation_column_vector():
+    rotation = np.eye(3)
+    translation = np.array([[1], [2], [3]])  # Shape (3, 1)
+    expected = np.hstack([rotation, np.array([1, 2, 3]).reshape(-1, 1)])
+    result = rt2mat(rotation, translation, as_homo=False)
+    np.testing.assert_array_equal(result, expected)
+
+
+def test_output_shapes():
+    rotation = np.eye(3)
+    translation = np.zeros(3)
+    assert rt2mat(rotation, translation).shape == (3, 4)
+    assert rt2mat(rotation, translation, as_homo=True).shape == (4, 4)
