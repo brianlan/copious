@@ -7,3 +7,4 @@ pyyaml
 opencv-python
 polars
 pypcd4
+twine
