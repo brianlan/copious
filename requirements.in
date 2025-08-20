@@ -5,3 +5,5 @@ matplotlib
 pytest
 pyyaml
 opencv-python
+polars
+pypcd4
